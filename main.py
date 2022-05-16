@@ -13,8 +13,9 @@ class FloatingWindow(tk.Tk):
         tk.Tk.__init__(self)
         self.resizable(False, False)
 
-        self.wm_attributes('-type', 'splash')
-        if sys.platform == 'darwin':
+        if sys.platform != 'win32':
+            self.wm_attributes('-type', 'splash')
+        if sys.platform in ['darwin', 'win32']:
             self.overrideredirect(False)
             self.overrideredirect(True)
         self.wm_attributes('-alpha', sys.argv[2] if len(sys.argv) >= 3 else '1')
