@@ -14,6 +14,9 @@ class FloatingWindow(tk.Tk):
         self.resizable(False, False)
 
         self.wm_attributes('-type', 'splash')
+        if sys.platform == 'darwin':
+            self.overrideredirect(False)
+            self.overrideredirect(True)
         self.wm_attributes('-alpha', sys.argv[2] if len(sys.argv) >= 3 else '1')
 
         self.frame = tk.Frame(self, width=750, height=421)
@@ -90,7 +93,7 @@ class FloatingWindow(tk.Tk):
         self.geometry(f'+{x}+{y}')
 
 
-def main():
+def main(): 
     app = FloatingWindow()
     app.send_lower()
     app.mainloop()
