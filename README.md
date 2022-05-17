@@ -22,10 +22,12 @@ Desktop widget for displaying image (that's all, yes).
 
 ## Tested on
 
-* MacOs Monterey (with python 3.10)
+* MacOs Monterey (with python 3.10) - Intel and M1
 * Ubuntu 22.04 (with python 3.10)
 * Windows 10 (with python 3.10)
 
 ## Also
 
 You can use PyInstaller to create single "binary" file to improve your user expirience.
+
+On Mac M1 you can also use py2app to create signle app file.
