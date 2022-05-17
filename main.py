@@ -1,11 +1,27 @@
+import base64
 import json
 import os
+import signal
 import sys
 import tkinter as tk
+from io import BytesIO
 from tkinter import YES
 from typing import Tuple
 
 from PIL import ImageTk, Image
+
+from pic2str import explode
+
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 
 class FloatingWindow(tk.Tk):
@@ -24,7 +40,7 @@ class FloatingWindow(tk.Tk):
         self.frame.pack()
         self.frame.place(anchor='center', relx=0.5, rely=0.5)
 
-        self.img_file = Image.open("images/4-point-plan.png" if len(sys.argv) < 2 else sys.argv[1])
+        self.img_file = Image.open(BytesIO(base64.b64decode(explode)) if len(sys.argv) < 2 else sys.argv[1])
         self.img = ImageTk.PhotoImage(self.img_file)
 
         self.label = tk.Label(self.frame, image=self.img)
@@ -93,9 +109,15 @@ class FloatingWindow(tk.Tk):
 
         self.geometry(f'+{x}+{y}')
 
+    def sigint_handler(self, sig, frame):
+        self.quit()
+        self.update()
+
 
 def main(): 
     app = FloatingWindow()
+    signal.signal(signal.SIGINT, app.sigint_handler)
+
     app.send_lower()
     app.mainloop()
 
